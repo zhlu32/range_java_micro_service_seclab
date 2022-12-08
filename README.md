@@ -22,21 +22,15 @@ mysql -u root -p
 > source /micro_service_seclab.sql
 ```
 
-
-# Java-SpringBoot靶场介绍
-
-## 靶场用途
-* 用于Java安全漏洞教学
+# Java-SpringBoot靶场用途
+* 用于Java漏洞安全教学
   * 白盒代码审计
   * 黑盒渗透
 * 用于检查白盒检测工具能力（SAST，如CodeQL、Fortify、Snyk等） 
-  * 拿预先埋点的漏洞列表，与工具测试结果进行对比
+  * 拿预先埋点的漏洞列表和误报列表，与工具检测结果进行对比  
 
-## 靶场漏洞列表
-### 1. SQL注入
+# SQL注入漏洞
 入口文件：`controller/SqlInjectController.java` 
-
-**SQL注入漏洞列表**
 
 序号 | 种类 | 解释 | 伪代码 | POC
 ---|---|---|--- | ---
@@ -48,21 +42,26 @@ mysql -u root -p
 6 | MyBatis注解方式注入 | MyBatis注解方式注入 | `@Select("select * from students where username ='${name}'")` | `curl -d "name=' or 1=1 or '" -X POST localhost:8080/sqlinjection/myBatisWithAnnotations`
 7 | Lombok | Lombok对注入漏洞的影响 | `@Data注解Teacher` | `curl -d "{\"username\":\"' or 1=1 or '\"}" -H "Content-type: application/json"  -X POST localhost:8080/sqlinjection/object_lombok`
 
-**误报：SQL注入漏洞列表**
+<br>
+
+**漏洞检测工具，可能误报的SQL注入漏洞列表：**
 
 序号 | 种类 | 解释 | 伪代码
 ---|---|---|---
 1 | List\<Long\> | 输入点是Long泛型 | ` longin(@RequestBody List<Long> user_list) ` 
-2 |Spring Data JPA | JPA 方式 | 参照代码
+2 |Spring Data JPA | JPA 方式 | `PersonRepository.java`
 
-### 2. RCE命令执行
+# RCE命令执行漏洞
+入口文件：`controller/RceController.java` 
 
-种类 | 解释 | 伪代码
----|---|---
-processBuilder|processBuilder导致的RCE| --
-Runtime.getRuntime().exec(args)|Runtime.getRuntime().exec(args)导致的RCE|--
+序号 | 种类 | 解释 | 伪代码 | POC
+---|---|---|---|---
+1 | processBuilder|processBuilder导致的RCE| -- | `curl -d "command=/bin/bash" -X POST localhost:8080/rce/one`
+2 | Runtime.getRuntime().exec(args)|Runtime.getRuntime().exec(args)导致的RCE|-- | `curl -d "command=ls -al" -X POST localhost:8080/rce/two`
 
-#### 3). FastJson反序列化漏洞
+# FastJson反序列化漏洞
+入口文件：`controller/FastJsonController.java` 
+
 提供`1.2.31`版本的Fastjson供进行测试。
 ```
 @RestController
@@ -78,23 +77,23 @@ public class FastJsonController {
 
 }
 ```
-#### 4. SSRF漏洞
-种类 | 解释 | 伪代码
----|---|---
-url.openConnection()| url.openConnection()引起的SSRF| 参照代码
-Request.Get() | Request.Get()引起的SSRF | 参照代码
-OkHttpClient | OkHttpClient引起的SSRF | 参照代码
-DefaultHttpClient| DefaultHttpClient引起的SSRF |参照代码
-url.openStream()| url.openStream()引起的SSRF | 参照代码
-#### 5. XXE
-种类 | 解释 | 伪代码
----|---|---
-DocumentBuilderFactory| DocumentBuilderFactory引起的SSRF | 参照代码
+# SSRF漏洞
+入口文件：`controller/SSRFController.java` 
 
-#### 6. 反序列化漏洞
-持续添加中
+序号 |种类 | 解释 | 伪代码
+---|---|---|---
+1|url.openConnection()| url.openConnection()引起的SSRF| `One()`
+2|Request.Get() | Request.Get()引起的SSRF | `Two()`
+3|OkHttpClient | OkHttpClient引起的SSRF | `Three()`
+4|DefaultHttpClient| DefaultHttpClient引起的SSRF | `Four()`
+5|url.openStream()| url.openStream()引起的SSRF | `Five()`
 
-#### 7. 逻辑漏洞
-添加中
+# XXE
+入口文件：`controller/XXEController.java` 
 
-#### 欢迎大家提交漏洞代码....
+序号 |种类 | 解释 | 伪代码
+---|---|---|---
+1 | DocumentBuilderFactory| DocumentBuilderFactory引起的XXE |  `One()`
+
+# 欢迎大家提交PR漏洞代码....
+....
