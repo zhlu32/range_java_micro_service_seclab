@@ -22,6 +22,9 @@ mysql -u root -p
 > source /micro_service_seclab.sql
 ```
 
+## 运行靶场API服务
+为了后续验证漏洞的POC，以在`Visual Studio Code`IDE为例，打开`MicroServiceSeclabApplication.java`文件，运行Run，服务启动成功后，会在本地8080端口开启API服务。
+
 # Java-SpringBoot靶场用途
 * 用于Java漏洞安全教学
   * 白盒代码审计
