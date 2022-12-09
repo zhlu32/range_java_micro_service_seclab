@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController(value = "/xxe")
+@RestController
+@RequestMapping(value = "/xxe")
 public class XXEController {
 
     @RequestMapping(value = "/one")
-    
     public String one(@RequestParam(value = "xml_str") String xmlStr) throws Exception {
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputStream stream = new ByteArrayInputStream(xmlStr.getBytes("UTF-8"));
@@ -22,4 +22,5 @@ public class XXEController {
         doc.getDocumentElement().normalize();
         return "Hello World";
     }
+
 }
