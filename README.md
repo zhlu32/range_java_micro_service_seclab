@@ -98,20 +98,20 @@ public class FastJsonController {
 ---|---|---|---
 1 | DocumentBuilderFactory| DocumentBuilderFactory引起的XXE |  `One()`
 
+# URL Redirect重定向漏洞
+
+入口文件：`controller/OpenRedirectorController.java`
+
+| 序号 | 种类                                                       | 解释 | 伪代码 |
+| ---- | ---------------------------------------------------------- | ---- | ------ |
+| 1    | org.springframework.web.servlet.ModelAndView               | -    | -      |
+| 2    | javax.servlet.http.HttpServletResponse#sendRedirect        | -    | -      |
+| 3    | javax.servlet.http.HttpServletResponse#setStatus&setHeader | -    | -      |
+
 # 欢迎大家提交PR漏洞代码....
 ....
 
 ## 贡献者
 
 <!-- readme: collaborators,contributors -start -->
-<table>
-<tr>
-    <td align="center">
-        <a href="https://github.com/zhlu32">
-            <img src="https://avatars.githubusercontent.com/u/3273178?v=4" width="100;" alt="zhlu32"/>
-            <br />
-            <sub><b>Bean.zhang</b></sub>
-        </a>
-    </td></tr>
-</table>
 <!-- readme: collaborators,contributors -end -->
